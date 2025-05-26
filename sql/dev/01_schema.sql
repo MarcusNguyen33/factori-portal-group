@@ -158,3 +158,34 @@ CREATE TABLE IF NOT EXISTS inventory_records (
     FOREIGN KEY (location_id) REFERENCES locations (location_id)
     ON DELETE RESTRICT ON UPDATE CASCADE
 );
+-- New table to enforce unit_type → data_type
+--Create a new table to isolate the dependency unit_type → data_type
+CREATE TABLE unit_data_types (
+    unit_type INT PRIMARY KEY REFERENCES unit_types(type_id),
+    data_type VARCHAR(50) NOT NULL
+);
+
+-- Updated attribute_definitions (removed data_type column)
+CREATE TABLE attribute_definitions (
+    definition_id SERIAL PRIMARY KEY,
+    attribute_name VARCHAR(50) NOT NULL UNIQUE,
+    unit_type INT REFERENCES unit_data_types(unit_type),
+    allowed_values VARCHAR(50)
+);
+-- Add default_unit_id to attribute_definitions
+ALTER TABLE attribute_definitions
+ADD COLUMN default_unit_id INT REFERENCES unit_definitions(unit_id);
+
+-- Updated item_attributes (unit_id is now optional)
+CREATE TABLE item_attributes (
+    attribute_id SERIAL PRIMARY KEY,
+    item_id INT REFERENCES items(item_id),
+    definition_id INT REFERENCES attribute_definitions(definition_id),
+    attribute_value VARCHAR(20),
+    override_unit_id INT REFERENCES unit_definitions(unit_id)  -- Optional override
+);
+--(item_id, location_id) becomes a candidate key (superkey), eliminating redundancy.
+ALTER TABLE inventory
+ADD UNIQUE (item_id, location_id);
+
+
