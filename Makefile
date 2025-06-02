@@ -58,12 +58,12 @@ run-dev-scripts:
 # run the FastAPI backend development server on port 8000
 run-backend:
 	@echo "Starting backend server with Uvicorn..."
-	cd backend && source .venv/bin/activate && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+	cd backend && source .venv/Scripts/activate && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 # install backend dependencies on pip
 install-backend:
 	@echo "Installing backend dependencies..."
-	cd backend && source .venv/bin/activate && pip install -r requirements.txt
+	cd backend && python -m venv .venv && source .venv/Scripts/activate && pip install -r requirements.txt
 
 .PHONY: format
 
