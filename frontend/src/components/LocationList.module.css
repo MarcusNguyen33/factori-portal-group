@@ -1,0 +1,70 @@
+.locationListContainer {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.locationListContainer h2 {
+  margin-top: 0;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.listItem {
+  background-color: #fff;
+  border: 1px solid #eee;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.locationItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.locationName {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #0070f3;
+  margin-bottom: 5px;
+}
+
+.locationDescription {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+}
+
+.locationDates {
+  font-size: 0.8em;
+  color: #777;
+  text-align: right;
+}
+
+.message {
+  text-align: center;
+  font-size: 1.1em;
+  color: #555;
+  padding: 20px;
+}
+
+.error {
+  color: #d32f2f;
+  background-color: #ffebee;
+  border: 1px solid #d32f2f;
+  border-radius: 4px;
+}

@@ -70,3 +70,11 @@ export const getInventory = () => {
 export const getInventoryByItemId = (itemId) => {
   return request(`/inventory/items=${itemId}/`);
 };
+
+export const getLocations = () => {
+  return request("/locations/");
+};
+
+export const getLocationByID = (locationID) => {
+  return request(`/locations/${locationID}/`);
+};

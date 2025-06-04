@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import items
+from .routers import items, locations
 
 app = FastAPI(title="FactoriPortal API")
 
@@ -30,6 +30,8 @@ app.add_middleware(
 # called "items" in the documentation. so we'd have different tags for
 # different sections/relations for organization.
 app.include_router(items.router, prefix="/api/v1/items", tags=["items"])
+
+app.include_router(locations.router, prefix="/api/v1/locations", tags=["locations"])
 
 
 # the decorator tells FastAPI that when an HTTP GET request comes in for

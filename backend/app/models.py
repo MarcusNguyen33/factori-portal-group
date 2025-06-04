@@ -34,3 +34,15 @@ class ItemCreate(ItemsBase):
 class ItemUpdate(SQLModel):
     item_name: Optional[str] = None
     description: Optional[str] = None
+
+
+class Locations(SQLModel, table=True):
+    location_id: Optional[int] = Field(default=None, primary_key=True)
+    location_name: Optional[str] = Field(unique=True)
+    location_description: Optional[str] = Field()
+
+
+class LocationRead(SQLModel):
+    location_id: int
+    location_name: str
+    location_description: str
