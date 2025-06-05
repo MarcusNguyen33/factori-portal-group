@@ -68,6 +68,8 @@ class InventoryBase(SQLModel):
 
 class Inventory(InventoryBase, table=True):
     inventory_id: Optional[int] = Field(default=None, primary_key=True)
+    # item: Items = Relationship(back_populates="inventory")
+    # location: Locations = Relationship(back_populates="inventory")
 
 
 class InventoryCreate(InventoryBase):
@@ -80,13 +82,13 @@ class InventoryOutput(InventoryBase):
 
 class InventoryItemsLocation(SQLModel):
     inventory_id: int
+    quantity: int
     item_id: int
+    location_id: int
     item_name: str
     description: Optional[str]
-    location_id: int
     location_name: str
     location_description: Optional[str]
-    quantity: int
 
 
 # class InventoryRead(SQLModel, table=True):

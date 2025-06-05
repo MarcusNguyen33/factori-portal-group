@@ -55,6 +55,21 @@
   text-align: right;
 }
 
+.location {
+  font-size: 0.85rem;
+  color: #1100ff;
+}
+
+.quantity {
+  font-size: 0.85rem;
+  color: #000000;
+}
+
+.shiftedRight {
+  text-align: right;
+  margin-left: auto;
+}
+
 .message {
   text-align: center;
   font-size: 1.1em;

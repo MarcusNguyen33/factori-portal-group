@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@/components/Card/Card";
 import Button from "@/components/Button/Button";
 import InventoryList from "@/components/InventoryList";
@@ -17,6 +17,11 @@ export default function Inventory() {
   const [inventoryIDToFetch, setInventoryIDToFetch] = useState("");
   const [singleInventory, setSingleInventory] = useState(null);
   const [singleInventoryError, setSingleInventoryError] = useState(null);
+  useEffect(() => {
+    if (inventory) {
+      console.log("inventory set = ", inventory);
+    }
+  }, [inventory]);
 
   const handleFetchAllInventory = async () => {
     console.log("handleFetchAllInventory() called");
@@ -27,7 +32,7 @@ export default function Inventory() {
     try {
       const data = await api.getInventory();
       setInventory(data);
-      console.log("handleFetchAllInventory() data received: ", data);
+      console.log(`handleFetchAllInventory() data received: data = `, data);
     } catch (err) {
       setError(err);
       console.error("Failed to fetch inventory", err);
@@ -119,7 +124,7 @@ export default function Inventory() {
         >
           <h2>Fetched Inventory Details</h2>
           <p>
-            <strong>ID:</strong> {singleInve.location_id}
+            <strong>ID:</strong> {singleInventory.location_id}
           </p>
           <p>
             <strong>Name:</strong> {singleSupplier.location_name}
