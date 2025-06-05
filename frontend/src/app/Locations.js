@@ -80,9 +80,7 @@ export default function Locations() {
           <input
             type="text"
             value={locationIDToFetch}
-            onChange={(e) => () => {
-              return;
-            }}
+            onChange={(e) => setLocationToFetch(e.target.value)}
             placeholder="Enter Location ID"
             style={{
               padding: "8px",

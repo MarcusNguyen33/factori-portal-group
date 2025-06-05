@@ -58,7 +58,7 @@ export default function Items() {
   return (
     <div className="appContainer">
       <Card>
-        <h1>Inventory Portal</h1>
+        <h1>Items Portal</h1>
         <div
           style={{
             marginBottom: "20px",

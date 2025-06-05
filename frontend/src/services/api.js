@@ -24,7 +24,13 @@ async function request(endpoint, options = {}) {
   };
 
   try {
+    console.log(
+      `request(${endpoint}, ${options}): pre call to fetch(${url}, ${config})`,
+    );
     const response = await fetch(url, config);
+    console.log(
+      `request(${endpoint}, ${options}): post call to fetch(${url}, ${config}) with response ${response}`,
+    );
     if (!response.ok) {
       let errorDetail = `HTTP error! status: ${response.status}`;
       try {
@@ -64,11 +70,12 @@ export const getItemById = (itemId) => {
 };
 
 export const getInventory = () => {
+  console.log("getInventory() called");
   return request("/inventory/");
 };
 
-export const getInventoryByItemId = (itemId) => {
-  return request(`/inventory/items=${itemId}/`);
+export const getInventoryByID = (inventoryId) => {
+  return request(`/inventory/id=${inventoryId}/`);
 };
 
 export const getLocations = () => {
@@ -76,5 +83,13 @@ export const getLocations = () => {
 };
 
 export const getLocationByID = (locationID) => {
-  return request(`/locations/${locationID}/`);
+  return request(`/locations/id=${locationID}/`);
+};
+
+export const getSuppliers = () => {
+  return request("/suppliers/");
+};
+
+export const getSupplierByID = (ID) => {
+  return request(`/suppliers/${ID}/`);
 };

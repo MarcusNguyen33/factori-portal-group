@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import items, locations
+from .routers import items, locations, suppliers, inventory
 
 app = FastAPI(title="FactoriPortal API")
 
@@ -33,6 +33,10 @@ app.include_router(items.router, prefix="/api/v1/items", tags=["items"])
 
 app.include_router(locations.router, prefix="/api/v1/locations", tags=["locations"])
 
+app.include_router(suppliers.router, prefix="/api/v1/suppliers", tags=["suppliers"])
+
+app.include_router(inventory.router, prefix="/api/v1/inventory", tags=["inventory"])
+
 
 # the decorator tells FastAPI that when an HTTP GET request comes in for
 # the route path "/" of the application, execute the `read_route` function
@@ -41,3 +45,8 @@ app.include_router(locations.router, prefix="/api/v1/locations", tags=["location
 @app.get("/")
 async def read_root():
     return {"message": "Welcome to FactoriPortal API!"}
+
+
+@app.get("/test")
+async def test():
+    return {"message": "response!"}

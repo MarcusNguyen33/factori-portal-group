@@ -19,6 +19,6 @@ async def read_locations_endpoint(db: Session = Depends(get_session)):
 async def read_location_by_id(location_id: int, db: Session = Depends(get_session)):
     db_location = db.get(Locations, location_id)
     if not db_location:
-        raise HTTPException(status_code=404, detail="Location not found")
+        raise HTTPException(status_code=404, detail="Supplier not found")
 
     return db_location

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./LocationList.module.css";
+import styles from "./XList.module.css";
 
 export default function LocationList({ locations, loading, error }) {
   if (loading) {
@@ -19,16 +19,16 @@ export default function LocationList({ locations, loading, error }) {
   }
 
   return (
-    <div className={styles.locationListContainer}>
+    <div className={styles.listContainer}>
       <h2>Location List</h2>
       <ul className={styles.list}>
         {locations.map((location) => (
           <li key={location.location_id} className={styles.listLocation}>
-            <div className={styles.locationName}>
+            <div className={styles.XName}>
               {location.location_name} (ID: {location.location_id})
             </div>
-            <div className={styles.locationDescription}>
-              {location.description || "No description"}
+            <div className={styles.XDescription}>
+              {location.location_description || "No description"}
             </div>
           </li>
         ))}

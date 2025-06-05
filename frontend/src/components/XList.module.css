@@ -1,4 +1,4 @@
-.locationListContainer {
+.listContainer {
   width: 100%;
   max-width: 600px;
   margin-top: 20px;
@@ -9,7 +9,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.locationListContainer h2 {
+.listContainer h2 {
   margin-top: 0;
   color: #333;
   text-align: center;
@@ -31,25 +31,25 @@
   transition: box-shadow 0.2s ease-in-out;
 }
 
-.locationItem:hover {
+.XItem:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.locationName {
+.XName {
   font-weight: bold;
   font-size: 1.1em;
   color: #0070f3;
   margin-bottom: 5px;
 }
 
-.locationDescription {
+.XDescription {
   font-size: 0.9em;
   color: #555;
   margin-bottom: 8px;
   white-space: pre-wrap;
 }
 
-.locationDates {
+.XDates {
   font-size: 0.8em;
   color: #777;
   text-align: right;

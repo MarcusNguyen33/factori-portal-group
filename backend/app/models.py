@@ -46,3 +46,51 @@ class LocationRead(SQLModel):
     location_id: int
     location_name: str
     location_description: str
+
+
+class Suppliers(SQLModel, table=True):
+    supplier_id: Optional[int] = Field(default=None, primary_key=True)
+    supplier_name: Optional[str] = Field(unique=True)
+
+
+class SupplierRead(SQLModel):
+    supplier_id: int
+    supplier_name: str
+
+
+class InventoryBase(SQLModel):
+    item_id: Optional[int] = Field(default=None, foreign_key="items.item_id")
+    location_id: Optional[int] = Field(
+        default=None, foreign_key="locations.location_id"
+    )
+    quantity: int = Field(default=0)
+
+
+class Inventory(InventoryBase, table=True):
+    inventory_id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class InventoryCreate(InventoryBase):
+    pass
+
+
+class InventoryOutput(InventoryBase):
+    inventory_id: int
+
+
+class InventoryItemsLocation(SQLModel):
+    inventory_id: int
+    item_id: int
+    item_name: str
+    description: Optional[str]
+    location_id: int
+    location_name: str
+    location_description: Optional[str]
+    quantity: int
+
+
+# class InventoryRead(SQLModel, table=True):
+#    inventory_id: int
+#    item_id:  int
+#    location_id: int
+#    quantity: int
