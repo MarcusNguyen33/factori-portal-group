@@ -1,6 +1,6 @@
 .listContainer {
   width: 100%;
-  max-width: 600px;
+  max-width: 550px;
   margin-top: 20px;
   padding: 15px;
   background-color: #f9f9f9;
@@ -60,6 +60,11 @@
   color: #1100ff;
 }
 
+.add {
+  font-size: 0.85rem;
+  color: #15ff00;
+}
+
 .quantity {
   font-size: 0.85rem;
   color: #000000;
@@ -82,4 +87,41 @@
   background-color: #ffebee;
   border: 1px solid #d32f2f;
   border-radius: 4px;
+}
+
+.transactionList {
+  list-style-type: none;
+  padding-left: 0;
+  text-align: left; /* Left-align the list */
+}
+
+.transactionItem {
+  border-bottom: 1px solid #ccc;
+  padding: 8px 0;
+}
+
+.transactionTop {
+  display: flex;
+  justify-content: space-between; /* Quantity left, Date right */
+}
+
+.quantity {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.transactionDate {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.transactionSupplier {
+  font-size: 0.85rem;
+  color: #007bff;
+}
+
+.transactionDescription {
+  font-size: 0.85rem;
+  color: #333;
+  margin-top: 4px;
 }

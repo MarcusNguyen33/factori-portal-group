@@ -9,6 +9,12 @@ export default function Locations() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [adding, setAdding] = useState(false);
+  const [nameToAdd, setNameToAdd] = useState("");
+  const [descriptionToAdd, setDescriptionToAdd] = useState("");
+  const [newLocationWaiting, setNewLocationLoading] = useState(false);
+  const [newLocationError, setNewLocationError] = useState(null);
+
   const [locationIDToFetch, setLocationToFetch] = useState("");
   const [singleLocation, setSingleLocation] = useState(null);
   const [singleLocationLoading, setSingleLocationLoading] = useState(false);
@@ -55,10 +61,40 @@ export default function Locations() {
     }
   };
 
+  const handleInsertNewLocation = async () => {
+    console.log(
+      "handleInsertNewLocation() called: ",
+      adding,
+      nameToAdd,
+      descriptionToAdd,
+      newLocationWaiting,
+      newLocationError,
+    );
+    if (!nameToAdd.trim()) {
+      setNewLocationError(
+        new Error("Please enter a name for the new location"),
+      );
+      return;
+    }
+
+    setNewLocationLoading(true);
+    setNewLocationError(null);
+
+    try {
+      const response = await api.addLocation(nameToAdd, descriptionToAdd);
+      setNameToAdd("");
+      setDescriptionToAdd("");
+    } catch (err) {
+      setNewLocationError(err);
+      console.error("Error trying to insert new location: ", err);
+    } finally {
+      setNewLocationLoading(false);
+    }
+  };
+
   return (
     <div className="appContainer">
       <Card>
-        <h1>Locations Portal</h1>
         <div
           style={{
             marginBottom: "20px",
@@ -67,38 +103,57 @@ export default function Locations() {
             alignItems: "center",
           }}
         >
+          <h1>Locations Portal</h1>
           <Button onClick={handleFetchAllLocations}>Fetch All Locations</Button>
-        </div>
-        <div
-          style={{
-            marginBottom: "20px",
-            display: "flex",
-            gap: "10px",
-            alignItems: "center",
-          }}
-        >
-          <input
-            type="text"
-            value={locationIDToFetch}
-            onChange={(e) => setLocationToFetch(e.target.value)}
-            placeholder="Enter Location ID"
-            style={{
-              padding: "8px",
-              marginRight: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          />
-          <Button onClick={handleFetchLocationByID}>
-            Fetch Location by ID
+          <Button onClick={() => setAdding(!adding)}>
+            Create New Location
           </Button>
         </div>
+        {adding == true && (
+          <div>
+            <input
+              type="text"
+              value={nameToAdd}
+              onChange={(e) => setNameToAdd(e.target.value)}
+              placeholder="Enter Name of New Location"
+              style={{
+                padding: "8px",
+                marginRight: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <input
+              type="text"
+              value={descriptionToAdd}
+              onChange={(e) => setDescriptionToAdd(e.target.value)}
+              placeholder="Enter Description of New Location"
+              style={{
+                padding: "8px",
+                marginRight: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <Button onClick={handleInsertNewLocation}>Insert</Button>
+            {newLocationWaiting && <div>Waiting For Response</div>}
+            {!newLocationWaiting && newLocationError && (
+              <p style={{ color: "red" }}>
+                Error adding new Location: {newLocationError.message}
+              </p>
+            )}
+          </div>
+        )}
+        {(locations.length > 0 || loading || error) && !singleLocation && (
+          <div style={{ marginTop: "20px", width: "90%" }}>
+            <LocationList
+              locations={locations}
+              loading={loading}
+              error={error}
+            />
+          </div>
+        )}
       </Card>
-
-      {(locations.length > 0 || loading || error) && !singleLocation && (
-        <LocationList locations={locations} loading={loading} error={error} />
-      )}
-
       {singleLocationLoading && <p>Loading location...</p>}
       {singleLocationError && (
         <p style={{ color: "red" }}>Error: {singleLocationError.message}</p>

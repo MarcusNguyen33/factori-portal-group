@@ -10,6 +10,7 @@ import Generic from "./Generic.js";
 import Items from "./Items.js";
 import Inventory from "./Inventory.js";
 import InventoryRecords from "./InventoryRecords.js";
+import InventoryTransactions from "./InventoryTransactions.js";
 import Suppliers from "./Suppliers.js";
 import Locations from "./Locations.js";
 
@@ -20,6 +21,7 @@ export default function Home() {
     "Home",
     "Items",
     "Inventory",
+    "Inventory Transactions",
     "Inventory Records",
     "Suppliers",
     "Locations",
@@ -33,6 +35,8 @@ export default function Home() {
         return <Items />;
       case "Inventory":
         return <Inventory />;
+      case "Inventory Transactions":
+        return <InventoryTransactions />;
       case "Inventory Records":
         return <InventoryRecords />;
       case "Suppliers":

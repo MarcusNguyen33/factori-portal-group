@@ -1,7 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import items, locations, suppliers, inventory
+
+import debugpy
+
+from .routers import items, locations, suppliers, inventory, transactions, records
+
+# so vsc can attach
+debugpy.listen(("0.0.0.0", 5678))
+print("waiting for debugger to attach...")
+debugpy.wait_for_client()
+
 
 app = FastAPI(title="FactoriPortal API")
 
@@ -36,6 +45,12 @@ app.include_router(locations.router, prefix="/api/v1/locations", tags=["location
 app.include_router(suppliers.router, prefix="/api/v1/suppliers", tags=["suppliers"])
 
 app.include_router(inventory.router, prefix="/api/v1/inventory", tags=["inventory"])
+
+app.include_router(
+    transactions.router, prefix="/api/v1/transactions", tags=["transactions"]
+)
+
+app.include_router(records.router, prefix="/api/v1/records", tags=["records"])
 
 
 # the decorator tells FastAPI that when an HTTP GET request comes in for

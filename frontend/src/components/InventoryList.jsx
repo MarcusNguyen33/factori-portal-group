@@ -6,7 +6,7 @@ export default function InventoryList({ inventory, loading, error }) {
   if (loading) {
     return <p className={styles.message}>Loading inventory...</p>;
   }
-  console.log(`InventoryList(${inventory})`);
+  console.log(`InventoryList(`, inventory, `)`);
   if (error) {
     return (
       <p className={`${styles.message} ${styles.error}`}>
@@ -24,7 +24,14 @@ export default function InventoryList({ inventory, loading, error }) {
       <h2>Inventory List</h2>
       <ul className={styles.list}>
         {inventory.map((inv) => (
-          <InventoryEntry inv={inv[0]} item={inv[1]} location={inv[2]} />
+          <InventoryEntry
+            key={inv.inventory.inventory_id}
+            inv={inv.inventory}
+            item={inv.item}
+            location={inv.location}
+            latest_record={inv.latest_record}
+            transactions={inv.transactions}
+          />
         ))}
       </ul>
     </div>

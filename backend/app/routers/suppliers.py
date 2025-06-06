@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from typing import List
+from sqlalchemy.exc import IntegrityError
 
 from ..db import get_session
-from ..models import SupplierRead, Suppliers
+from ..models import SupplierCreate, SupplierRead, Suppliers
 
 router = APIRouter()
 
@@ -25,3 +26,22 @@ async def read_item_by_id(item_id: int, db: Session = Depends(get_session)):
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
     return db_item
+
+
+@router.post("/", response_model=Suppliers)
+async def create_supplier_endpoint(
+    supplier: SupplierCreate, db: Session = Depends(get_session)
+):
+    try:
+        new_supplier = Suppliers(
+            **supplier.model_dump()
+        )  # Convert Pydantic model to ORM model
+        db.add(new_supplier)
+        db.commit()
+        db.refresh(new_supplier)  # Ensure latest state is returned
+    except IntegrityError as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=f"Database Error: {str(e.orig)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+    return new_supplier

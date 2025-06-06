@@ -69,45 +69,17 @@ export default function Inventory() {
     <div className="appContainer">
       <Card>
         <h1>Inventory Portal</h1>
-        <div
-          style={{
-            marginBottom: "20px",
-            display: "flex",
-            gap: "10px",
-            alignItems: "center",
-          }}
-        >
-          <Button onClick={handleFetchAllInventory}>Fetch All Inventory</Button>
-        </div>
-        <div
-          style={{
-            marginBottom: "20px",
-            display: "flex",
-            gap: "10px",
-            alignItems: "center",
-          }}
-        >
-          <input
-            type="text"
-            value={inventoryIDToFetch}
-            onChange={(e) => setInventoryIDToFetch(e.target.value)}
-            placeholder="Enter Inventory ID"
-            style={{
-              padding: "8px",
-              marginRight: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          />
-          <Button onClick={handleFetchInventoryByID}>
-            Fetch Inventory by ID
-          </Button>
-        </div>
+        <Button onClick={handleFetchAllInventory}>Fetch All Inventory</Button>
+        {(inventory.length > 0 || loading || error) && !singleInventory && (
+          <div style={{ marginTop: "20px", width: "100%" }}>
+            <InventoryList
+              inventory={inventory}
+              loading={loading}
+              error={error}
+            />
+          </div>
+        )}
       </Card>
-
-      {(inventory.length > 0 || loading || error) && !singleInventory && (
-        <InventoryList inventory={inventory} loading={loading} error={error} />
-      )}
 
       {loading == LOADING_SINGLE && <p>Loading Inventory...</p>}
       {singleInventoryError && (

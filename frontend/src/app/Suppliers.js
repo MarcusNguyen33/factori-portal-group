@@ -9,6 +9,12 @@ export default function Suppliers() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  //with adding new suppliers to the db
+  const [adding, setAdding] = useState(false);
+  const [nameToAdd, setNameToAdd] = useState("");
+  const [newWaiting, setNewLoading] = useState(false);
+  const [newError, setNewError] = useState(null);
+
   const [suppliersIDToFetch, setSupplierToFetch] = useState("");
   const [singleSupplier, setSingleSupplier] = useState(null);
   const [singleSupplierLoading, setSingleSupplierLoading] = useState(false);
@@ -55,10 +61,39 @@ export default function Suppliers() {
     }
   };
 
+  const handleInsertNew = async () => {
+    console.log(
+      "handleInsertNew() called: ",
+      adding,
+      nameToAdd,
+      newWaiting,
+      newError,
+    );
+    if (!nameToAdd.trim()) {
+      setNewLocationError(
+        new Error("Please enter a name for the new location"),
+      );
+      return;
+    }
+
+    setNewLoading(true);
+    setNewError(null);
+
+    try {
+      const response = await api.addSupplier(nameToAdd);
+      setNameToAdd("");
+      await handleFetchAllSuppliers();
+    } catch (err) {
+      setNewError(err);
+      console.error("Error trying to insert new location: ", err);
+    } finally {
+      setNewLoading(false);
+    }
+  };
+
   return (
     <div className="appContainer">
       <Card>
-        <h1>Suppliers Portal</h1>
         <div
           style={{
             marginBottom: "20px",
@@ -67,64 +102,43 @@ export default function Suppliers() {
             alignItems: "center",
           }}
         >
+          <h1>Suppliers Portal</h1>
           <Button onClick={handleFetchAllSuppliers}>Fetch All Suppliers</Button>
+          <Button onClick={() => setAdding(!adding)}>Add New Supplier</Button>
         </div>
-        <div
-          style={{
-            marginBottom: "20px",
-            display: "flex",
-            gap: "10px",
-            alignItems: "center",
-          }}
-        >
-          <input
-            type="text"
-            value={suppliersIDToFetch}
-            onChange={(e) => setSupplierToFetch(e.target.value)}
-            placeholder="Enter Supplier ID"
-            style={{
-              padding: "8px",
-              marginRight: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          />
-          <Button onClick={handleFetchSuppliersByID}>
-            Fetch Supplier by ID
-          </Button>
-        </div>
+        {adding == true && (
+          <div>
+            <input
+              type="text"
+              value={nameToAdd}
+              onChange={(e) => setNameToAdd(e.target.value)}
+              placeholder="Enter Name of New Supplier"
+              style={{
+                padding: "8px",
+                marginRight: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <Button onClick={handleInsertNew}>Insert</Button>
+            {newWaiting && <div>Waiting For Response</div>}
+            {!newWaiting && newError && (
+              <p style={{ color: "red" }}>
+                Error adding new Supplier: {newError.message}
+              </p>
+            )}
+          </div>
+        )}
+        {(suppliers.length > 0 || loading || error) && (
+          <div style={{ marginTop: "20px", width: "90%" }}>
+            <SupplierList
+              suppliers={suppliers}
+              loading={loading}
+              error={error}
+            />
+          </div>
+        )}
       </Card>
-
-      {(suppliers.length > 0 || loading || error) && !singleSupplier && (
-        <SupplierList suppliers={suppliers} loading={loading} error={error} />
-      )}
-
-      {singleSupplierLoading && <p>Loading Supplier...</p>}
-      {singleSupplierError && (
-        <p style={{ color: "red" }}>Error: {singleSupplierError.message}</p>
-      )}
-      {singleSupplier && !singleSupplierLoading && !singleSupplierError && (
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "15px",
-            border: "1px solid green",
-            borderRadius: "5px",
-          }}
-        >
-          <h2>Fetched Supplier Details</h2>
-          <p>
-            <strong>ID:</strong> {singleSupplier.location_id}
-          </p>
-          <p>
-            <strong>Name:</strong> {singleSupplier.location_name}
-          </p>
-          <p>
-            <strong>Description:</strong>{" "}
-            {singleSupplier.location_description || "N/A"}
-          </p>
-        </div>
-      )}
     </div>
   );
 }

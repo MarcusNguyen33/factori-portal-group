@@ -123,7 +123,8 @@ CREATE TABLE IF NOT EXISTS inventory_transactions (
 );
 
 -- only exists because we may want to have counts per item per location
--- this is basically the index/count for all items across locations (i think).
+-- this is the live estimate of current inventory counts based on transactions 
+-- since last record
 CREATE TABLE IF NOT EXISTS inventory (
     inventory_id SERIAL PRIMARY KEY,
     item_id INT NOT NULL,

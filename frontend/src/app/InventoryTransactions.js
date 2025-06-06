@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Card from "@/components/Card/Card";
 import Button from "@/components/Button/Button";
-import InventoryRecordList from "@/components/InventoryRecordList";
+import InventoryTransactionList from "@/components/InventoryTransactionList";
+import InventoryTransactionEntry from "@/components/InventoryTransactionEntry";
 import * as api from "@/services/api";
 
-export default function InventoryRecords() {
+export default function InventoryTransactions() {
   const [inventory, setInventory] = useState([]);
 
   const LOADING_NONE = 0;
@@ -14,11 +15,10 @@ export default function InventoryRecords() {
 
   useEffect(() => {
     if (inventory) {
-      console.log("inventory records set = ", inventory);
+      console.log("inventory transactions set = ", inventory);
     }
   }, [inventory]);
 
-  const [IDToRemove, setIDToRemove] = useState(null);
   const [adding, setAdding] = useState(false);
   const [itemNameToAdd, setItemNameToAdd] = useState("");
   const [locationNameToAdd, setLocationNameToAdd] = useState("");
@@ -38,23 +38,28 @@ export default function InventoryRecords() {
     setInventory([]);
 
     try {
-      const data = await api.getRecords();
+      const data = await api.getTransactions();
       setInventory(data);
     } catch (err) {
       setError(err);
-      console.error("Failed to fetch records:", err);
+      console.error("Failed to fetch transactions:", err);
     } finally {
       setLoading(LOADING_NONE);
     }
   };
 
-  const handleInsertNew = async () => {
+  const handleInsertNewTransaction = async () => {
+    console.log("handleInsertNewTransaction() called");
     if (!itemNameToAdd.trim()) {
-      setAddError(new Error("Please enter an item name for the new record"));
+      setAddError(
+        new Error("Please enter an item name for the new transaction"),
+      );
       return;
     }
     if (!locationNameToAdd.trim()) {
-      setAddError(new Error("Please enter a location name for the new record"));
+      setAddError(
+        new Error("Please enter a location name for the new transaction"),
+      );
       return;
     }
     const quantity = parseInt(quantityToAdd, 10);
@@ -62,11 +67,9 @@ export default function InventoryRecords() {
       setAddError(new Error("Invalid Quantity"));
       return;
     }
-    if (quantity < 0) {
+    if (quantity == 0) {
       setAddError(
-        new Error(
-          "Records with a quantity of less than 0 don't make any sense",
-        ),
+        new Error("Transactions with a quantity of 0 don't make any sense"),
       );
       return;
     }
@@ -75,16 +78,18 @@ export default function InventoryRecords() {
     setAddError(null);
 
     try {
-      const response = await api.addRecord(
+      const response = await api.addTransaction(
         itemNameToAdd,
         locationNameToAdd,
         quantity,
+        descriptionToAdd,
         dateToAdd,
+        supplierNameToAdd,
       );
       handleFetchAll();
     } catch (err) {
       setAddError(err);
-      console.error("Error trying to insert new record: ", err);
+      console.error("Error trying to insert new transaction: ", err);
     } finally {
       setAddLoading(false);
     }
@@ -101,10 +106,12 @@ export default function InventoryRecords() {
             alignItems: "center",
           }}
         >
-          <h1>Inventory Records Portal</h1>
-          <Button onClick={handleFetchAll}>Fetch All Inventory Records</Button>
+          <h1>Inventory Transactions Portal</h1>
+          <Button onClick={handleFetchAll}>
+            Fetch All Inventory Transactions
+          </Button>
           <Button onClick={() => setAdding(!adding)}>
-            Create or Remove Record
+            Create New Transaction
           </Button>
         </div>
         {adding == true && (
@@ -152,10 +159,34 @@ export default function InventoryRecords() {
               }}
             />
             <input
+              type="text"
+              value={descriptionToAdd}
+              onChange={(e) => setDescriptionToAdd(e.target.value)}
+              placeholder="Enter Description of the New Transaction"
+              style={{
+                padding: "8px",
+                marginRight: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <input
               type="datetime-local"
               value={dateToAdd}
               onChange={(e) => setDateToAdd(e.target.value)}
-              placeholder="Enter Date that the count was executed at"
+              placeholder="Enter Date that the Transaction Took Place"
+              style={{
+                padding: "8px",
+                marginRight: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <input
+              type="text"
+              value={supplierNameToAdd}
+              onChange={(e) => setSupplierNameToAdd(e.target.value)}
+              placeholder="Enter Name of Supplier to Add"
               style={{
                 padding: "8px",
                 marginRight: "10px",
@@ -164,11 +195,11 @@ export default function InventoryRecords() {
               }}
             />
 
-            <Button onClick={handleInsertNew}>Insert</Button>
+            <Button onClick={handleInsertNewTransaction}>Insert</Button>
             {addLoading && <div>Waiting For Response</div>}
             {!addLoading && addError && (
               <p style={{ color: "red" }}>
-                Error adding new record: {addError.message}
+                Error adding new transaction: {addError.message}
               </p>
             )}
           </div>
@@ -176,7 +207,7 @@ export default function InventoryRecords() {
 
         {(inventory.length > 0 || loading || error) && (
           <div style={{ marginTop: "20px", width: "90%" }}>
-            <InventoryRecordList
+            <InventoryTransactionList
               inventory={inventory}
               loading={loading}
               error={error}

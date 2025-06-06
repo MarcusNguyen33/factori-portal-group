@@ -69,6 +69,41 @@ export const getItemById = (itemId) => {
   return request(`/items/${itemId}/`);
 };
 
+export const addItem = (item_name, item_description) => {
+  return request("/items/", {
+    method: "POST",
+    body: JSON.stringify({
+      item_name: item_name,
+      description: item_description,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const addItemAttribute = (
+  item_id,
+  attribute_name,
+  unit,
+  unit_type,
+  value,
+) => {
+  return request("/items/", {
+    method: "POST",
+    body: JSON.stringify({
+      item_id: item_id,
+      attribute_name: attribute_name,
+      unit: unit,
+      unit_type: unit_type,
+      value: value,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 export const getInventory = () => {
   console.log("getInventory() called");
   return request("/inventory/");
@@ -82,6 +117,19 @@ export const getLocations = () => {
   return request("/locations/");
 };
 
+export const addLocation = (location_name, location_description) => {
+  return request("/locations/", {
+    method: "POST",
+    body: JSON.stringify({
+      location_name: location_name,
+      location_description: location_description,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 export const getLocationByID = (locationID) => {
   return request(`/locations/id=${locationID}/`);
 };
@@ -92,4 +140,73 @@ export const getSuppliers = () => {
 
 export const getSupplierByID = (ID) => {
   return request(`/suppliers/${ID}/`);
+};
+
+export const addSupplier = (supplier_name) => {
+  return request("/suppliers/", {
+    method: "POST",
+    body: JSON.stringify({
+      supplier_name: supplier_name,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const getTransactions = () => {
+  console.log("getTransactions() called");
+  return request("/transactions/");
+};
+
+export const getTransactionsForItemLoc = (itemID, locationID) => {
+  return request(`/transactions/${itemID}, ${locationID}/`);
+};
+
+export const addTransaction = (
+  item_name,
+  location_name,
+  quantity,
+  transaction_description,
+  transaction_date,
+  supplier_name,
+) => {
+  return request("/transactions/", {
+    method: "POST",
+    body: JSON.stringify({
+      item_name: item_name,
+      location_name: location_name,
+      quantity: quantity,
+      transaction_description: transaction_description,
+      transaction_date: transaction_date,
+      supplier_name: supplier_name,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const getRecords = () => {
+  return request("/records/");
+};
+
+export const addRecord = (
+  item_name,
+  location_name,
+  quantity,
+  date_of_count,
+) => {
+  return request("/records/", {
+    method: "POST",
+    body: JSON.stringify({
+      item_name: item_name,
+      location_name: location_name,
+      quantity: quantity,
+      date_of_count: date_of_count,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
