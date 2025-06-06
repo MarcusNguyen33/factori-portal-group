@@ -6,10 +6,12 @@ from sqlalchemy.exc import IntegrityError
 from ..db import get_session
 from ..models import SupplierCreate, SupplierRead, Suppliers
 
+
+#                       the backend provider for the supplier table. handles reading all suppliers, reading one supplier, and creating a new supplier
 router = APIRouter()
 
 
-# this gets all items from the database
+# this gets all suppliers from the database
 @router.get("/", response_model=List[SupplierRead])
 async def read_suppliers_endpoint(db: Session = Depends(get_session)):
     # `statement` is the query object retuned from selecting items.

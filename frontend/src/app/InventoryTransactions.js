@@ -5,6 +5,7 @@ import InventoryTransactionList from "@/components/InventoryTransactionList";
 import InventoryTransactionEntry from "@/components/InventoryTransactionEntry";
 import * as api from "@/services/api";
 
+/// handles displaying and providing an interface for adding inventory transactions in the database
 export default function InventoryTransactions() {
   const [inventory, setInventory] = useState([]);
 

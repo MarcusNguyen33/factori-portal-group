@@ -4,6 +4,7 @@ import Button from "@/components/Button/Button";
 import InventoryRecordList from "@/components/InventoryRecordList";
 import * as api from "@/services/api";
 
+/// handles displaying and providing an interface for adding new inventory records for the database
 export default function InventoryRecords() {
   const [inventory, setInventory] = useState([]);
 

@@ -6,14 +6,14 @@ import Button from "@/components/Button/Button";
 import ItemList from "@/components/ItemList";
 import * as api from "@/services/api";
 
-import Generic from "./Generic.js";
+import HomePage from "./Home.js";
 import Items from "./Items.js";
 import Inventory from "./Inventory.js";
 import InventoryRecords from "./InventoryRecords.js";
 import InventoryTransactions from "./InventoryTransactions.js";
-import Suppliers from "./Suppliers.js";
 import Locations from "./Locations.js";
 
+/// renders over everything to give us the navigation tabs
 export default function Home() {
   const [activeTab, setActiveTab] = useState("Home");
 
@@ -30,7 +30,7 @@ export default function Home() {
   const renderComponent = () => {
     switch (activeTab) {
       case "Home":
-        return <Generic />;
+        return <HomePage />;
       case "Items":
         return <Items />;
       case "Inventory":
@@ -40,7 +40,14 @@ export default function Home() {
       case "Inventory Records":
         return <InventoryRecords />;
       case "Suppliers":
-        return <Suppliers />;
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html:
+                "<iframe src='/suppliers.html' style='width:100%; height:100vh; border:none;'></iframe>",
+            }}
+          />
+        ); //<Suppliers />;
       case "Locations":
         return <Locations />;
     }

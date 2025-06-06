@@ -1,0 +1,69 @@
+
+<!--the html page that displays all suppliers in the database-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suppliers Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Suppliers Portal</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Supplier ID</th>
+                <th>Supplier Name</th>
+            </tr>
+        </thead>
+        <tbody id="resultTableBody">
+        </tbody>
+    </table>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const resultTableBody = document.getElementById('resultTableBody');
+
+            try {
+                resultTableBody.innerHTML = '';
+                const response = await fetch(`http://localhost:8000/api/v1/suppliers/`);
+                const suppliers = await response.json();
+
+                suppliers.forEach(supplier => {
+                    resultTableBody.innerHTML += `
+                    <tr>
+                        <td>${supplier.supplier_id}</td>    
+                        <td>${supplier.supplier_name}</td>    
+                    </tr> 
+                    `;
+                });
+            } catch (error) {
+                console.error('Error fetching suppliers:', error);
+            }
+        });
+    </script>
+</body>
+</html>
+

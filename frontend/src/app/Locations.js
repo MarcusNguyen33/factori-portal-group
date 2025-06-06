@@ -4,6 +4,7 @@ import Button from "@/components/Button/Button";
 import LocationList from "@/components/LocationList";
 import * as api from "@/services/api";
 
+/// handles displaying and giving an interface to add new locations
 export default function Locations() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(false);

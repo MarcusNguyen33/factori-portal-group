@@ -15,9 +15,11 @@ from ..models import (
     RecordItemLocation,
 )
 
+#                       backend provider for the inventory records table. handles reading all inventory records, and adding a new record (and updating the inventory table in turn)
 router = APIRouter()
 
 
+# reads all inventory records in the db, collating them with matching items and locations
 @router.get("/", response_model=List[RecordItemLocation])
 async def read_records_endpoint(db: Session = Depends(get_session)):
     # statement = select(InventoryTransaction)
@@ -38,6 +40,8 @@ async def read_records_endpoint(db: Session = Depends(get_session)):
     return response
 
 
+# adds a new inventory record to the table. receives only names for the item and location of the new record and it must verify that they exist.
+# this uses transaction handling to create or update matching rows in the inventory table if the input is valid
 @router.post("/", response_model=InventoryRecord)
 async def add_record_endpoint(
     inventory_record: InventoryRecordAttemptCreate, db: Session = Depends(get_session)
@@ -78,6 +82,7 @@ async def add_record_endpoint(
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 
+# tries to find a matching inventory for the given record
 async def find_matching_inventory_row_to_record(
     record: InventoryRecord, db: Session = Depends(get_session)
 ):
@@ -90,7 +95,7 @@ async def find_matching_inventory_row_to_record(
     return match
 
 
-# unsafe
+# unsafe, just adds a matching inventory row for the given record. commit determines whether it will be committed to the db here
 async def create_matching_inventory_row_for_record(
     record: InventoryRecord, db: Session = Depends(get_session), commit=True
 ) -> InventoryCreate:

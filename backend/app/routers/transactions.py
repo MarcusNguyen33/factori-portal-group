@@ -17,6 +17,8 @@ from ..models import (
     Suppliers,
 )
 
+#                       the backend provider for the transactions table. handles reading all transactions, and creating a new transaction which if successful
+#                       also updates the inventory table using transaction handling
 router = APIRouter()
 
 
@@ -48,6 +50,7 @@ async def read_transactions_endpoint(db: Session = Depends(get_session)):
     return response
 
 
+# unused
 @router.get("/itemloc/{location_id}", response_model=InventoryTransaction)
 async def get_transactions_for_item_at_loc(
     item_id: int, location_id: int, db: Session = Depends(get_session)
@@ -61,6 +64,8 @@ async def get_transactions_for_item_at_loc(
     return data
 
 
+# handles adding a new transaction, if the input is valid it will add its quantity (positive or negative) to the matching inventory element (same item and location)
+#   using transaction handling, creating a new matching element if none already exists (causes an error if the quantity in the inventory table drops below 0)
 @router.post("/", response_model=InventoryTransaction)
 async def add_transaction_endpoint(
     transaction: InventoryTransactionAttemptCreate, db: Session = Depends(get_session)
@@ -107,6 +112,7 @@ async def add_transaction_endpoint(
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 
+# finds a matching inventory element for the given transaction if it exists (same item and location)
 async def find_matching_inventory_row_to_transaction(
     transaction: InventoryTransaction, db: Session = Depends(get_session)
 ):
@@ -119,7 +125,7 @@ async def find_matching_inventory_row_to_transaction(
     return match
 
 
-# unsafe
+# unsafe, inserts a new matching inventory element into the inventory table given the inputted transaction, commit makes it commit it to the db here
 async def create_matching_inventory_row_for_transaction(
     transaction: InventoryTransaction, db: Session = Depends(get_session), commit=True
 ) -> InventoryCreate:

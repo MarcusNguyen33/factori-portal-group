@@ -16,10 +16,12 @@ from ..models import (
     Suppliers,
 )
 
+#   inventory backend provider: handles reading all inventories and reading a specific row
+
 router = APIRouter()
 
 
-# this gets all inventory from the database
+# reads all the inventory rows, and collates them with: the most recent matching InventoryRecord, the matching Item, the matching Location
 @router.get("/", response_model=List[InventoryResponse])
 async def read_inventory_endpoint(db: Session = Depends(get_session)):
 

@@ -4,6 +4,7 @@ import Button from "@/components/Button/Button";
 import ItemList from "@/components/ItemList";
 import * as api from "@/services/api";
 
+/// handles displaying all items in the database and their associated values
 export default function Items() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);

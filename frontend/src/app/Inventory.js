@@ -5,6 +5,7 @@ import InventoryList from "@/components/InventoryList";
 import InventoryEntry from "@/components/InventoryEntry";
 import * as api from "@/services/api";
 
+/// handles displaying all inventory elements in the database and related data
 export default function Inventory() {
   const [inventory, setInventory] = useState([]);
 

@@ -1,6 +1,8 @@
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api/v1";
 
+///           handles requests from the frontend that go to the backend
+
 /**
  * Helper function to make API requests.
  * @param {string} endpoint - The API endpoint to call (e.g., '/items/').

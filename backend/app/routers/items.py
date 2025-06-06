@@ -19,10 +19,11 @@ from ..models import (
     UnitType,
 )
 
+#               backend provider for the item table. handles reading all items, adding a new item, and adding a new attribute to an existing item
 router = APIRouter()
 
 
-# this gets all items from the database
+# reads all items in the db and collates them with all of their attributes, which are themselves collated with dereferences of all their foreign keys (unit definition names, values, etc)
 @router.get("/", response_model=List[ItemsWithAttributes])
 async def read_items_endpoint(db: Session = Depends(get_session)):
     # statement = select(Items)
