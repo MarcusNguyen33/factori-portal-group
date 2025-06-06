@@ -46,7 +46,7 @@ export default function HomePage() {
       worked_on:
         "Creating the schema. Expanding out the backend and frontend to fill most of the existing sql tables",
     },
-    { name: "Marcus Nguyen", worked_on: "" },
+    { name: "Marcus Nguyen", worked_on: " Create diagrams for the database." },
     { name: "Evan Lei", worked_on: "" },
     { name: "Jafar Al-Saheli", worked_on: "" },
   ];
